@@ -1,0 +1,38 @@
+version: 2.1
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
+      - test:
+          requires:
+            - save_hello_world_output
+      - analyze:
+          requires:
+            - save_hello_world_output
+
+
+
+
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.16.3
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run lint
+  test:
+        docker:
+          - image: circleci/node:10.16.3
+        steps:
+          - checkout
+          - run: npm install
+          - run: npm run test
+  analyze:
+    docker:
+      - image: circleci/node:10.16.3
+    steps:
+      - checkout
+      - run: npm audit
