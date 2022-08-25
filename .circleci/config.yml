@@ -31,7 +31,7 @@ jobs:
           name: Run Playbook and Configure server
           command: |
             # Your command
-            ansible-playbook -i 2_Ansible/inventory 2_Ansible/main-remote.yaml
+            yes|ansible-playbook -i 2_Ansible/inventory 2_Ansible/main-remote.yaml
 # Sequential workflow
 workflows:
   aws-cli:
