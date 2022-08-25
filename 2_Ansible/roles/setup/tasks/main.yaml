@@ -17,21 +17,25 @@
       - nodejs
       - npm
 
+# - name: "Install pm2"
+#   become: true
+#   shell: npm install pm2 -g
+  
 - name: "Install pm2"
   become: true
-  shell: npm install pm2 -g
+  shell: pwd
 
-- name: Create ~/web directory
-  become: true
-  file:
-     path: ~/web/
+# - name: Create ~/web directory
+#   become: true
+#   file:
+#      path: ~/web/
 
-- name: Copy index test page from files/index.js to ~/web/index.js
-  become: true
-  copy:
-    src: /home/ubuntu/2_Ansible/roles/setup/files/index.js 
-    dest: ~/web/
+# - name: Copy index test page from files/index.js to ~/web/index.js
+#   become: true
+#   copy:
+#     src: /home/ubuntu/2_Ansible/roles/setup/files/index.js 
+#     dest: ~/web/
 
-- name: Start the weeb server 
-  become: true
-  shell: pm2 start ~/web/index.js -f
+# - name: Start the weeb server 
+#   become: true
+#   shell: pm2 start ~/web/index.js -f
