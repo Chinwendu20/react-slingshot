@@ -17,7 +17,7 @@ jobs:
   # Exercise: Config and Deployment
   configure_infrastructure: 
     docker:
-      - image: python:3.7-alpine3.11 
+      - image: atlassian/ssh-ubuntu 
     steps:
       - checkout
       - add_ssh_keys:
@@ -26,7 +26,7 @@ jobs:
       - run:
           name: Install Ansible
           command: |
-            apk add --update ansible
+            sudo apt install ansible
       - run:
           name: Run Playbook and Configure server
           command: |
