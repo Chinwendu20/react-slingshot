@@ -33,6 +33,7 @@ jobs:
             # Your command
             cd 2_Ansible/
             ansible-playbook -i inventory main-remote.yaml
+            pwd
 # Sequential workflow
 workflows:
   aws-cli:
