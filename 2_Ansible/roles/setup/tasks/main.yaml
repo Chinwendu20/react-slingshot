@@ -1,0 +1,37 @@
+
+---
+- name: "update apt packages."
+  become: true
+  apt:
+    update_cache: yes
+
+- name: "upgrade packages"
+  become: true
+  apt:
+    upgrade: yes
+
+- name: "Install dependencies"
+  become: true
+  apt:
+    name:
+      - nodejs
+      - npm
+
+- name: "Install pm2"
+  become: true
+  shell: npm install pm2 -g
+
+- name: Create ~/web directory
+  become: true
+  file:
+     path: ~/web/
+
+- name: Copy index test page from files/index.js to ~/web/index.js
+  become: true
+  copy:
+    src: /home/ubuntu/2_Ansible/roles/setup/files/index.js 
+    dest: ~/web/
+
+- name: Start the weeb server 
+  become: true
+  shell: pm2 start ~/web/index.js -f
