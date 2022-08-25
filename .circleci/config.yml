@@ -4,9 +4,6 @@ orbs:
 commands:
    # Exercise - Rollback
    destroy_environment:
-     parameters:
-       stack:
-         type: string
      steps:
        - run:
            name: Destroy environment
