@@ -1,6 +1,21 @@
 version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@3.1
+commands:
+   # Exercise - Rollback
+   destroy_environment:
+     parameters:
+       stack:
+         type: string
+     steps:
+       - run:
+           name: Destroy environment
+           # ${CIRCLE_WORKFLOW_ID} is a Built-in environment variable 
+           # ${CIRCLE_WORKFLOW_ID:0:5} takes the first 5 chars of the variable CIRCLE_CI_WORKFLOW_ID 
+           
+           command: |
+             aws cloudformation delete-stack --stack-name myStack-${<< parameters.stack >>}
+           when: on_fail
 jobs:
   create_infrastructure: 
       docker:
@@ -35,26 +50,41 @@ jobs:
             cd 2_Ansible/
             ansible-playbook -i inventory main-remote.yaml
     # Exercise: Smoke Testing
+  # smoke_test:
+  #   docker:
+  #     - image: alpine:latest
+  #   steps:
+  #     - run: apk add --update curl
+  #     - run:
+  #         name: smoke test
+  #         command: |
+  #           URL="https://blog.udacityppp.com/"
+  #           # Test if website exists
+  #           if curl -s --head ${URL} 
+  #           then
+  #             return 0
+  #           else
+  #             return 1
+  #           fi
+  # Exercise: Smoke Testing
   smoke_test:
     docker:
       - image: alpine:latest
     steps:
-      - run: apk add --update curl
       - run:
-          name: smoke test
-          command: |
-            URL="https://blog.udacityppp.com/"
-            # Test if website exists
-            if curl -s --head ${URL} 
-            then
-              return 0
-            else
-              return 1
-            fi
+          name: Test job
+          # Fail the job intentionally to simulate an error.
+          command:  return 1
+      - destroy_environment:
+          stack: ${CIRCLE_WORKFLOW_ID:0:7} 
+
 
 # Sequential workflow
 workflows:
   aws-cli:
     jobs:
-      - smoke_test
+      - smoke_test:
+          requires:
+            - configure_infrastructure
+      - configure_infrastructure
     
