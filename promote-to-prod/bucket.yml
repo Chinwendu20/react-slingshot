@@ -22,5 +22,9 @@ Resources:
         - Sid: PublicReadForGetBucketObjects
           Effect: Allow
           Principal: '*'
-          Action: s3:GetObject
-          Resource: !Join ['', ['arn:aws:s3:::', !Ref 'WebsiteBucket', /*]]
+          Action: 
+            - s3:GetObject
+            - s3:ListBucket
+          Resource: 
+            - !Join ['', ['arn:aws:s3:::', !Ref 'WebsiteBucket', /*]]
+            - !Join ['', ['arn:aws:s3:::', !Ref 'WebsiteBucket']]
